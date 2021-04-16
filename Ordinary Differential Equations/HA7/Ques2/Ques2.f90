@@ -1,3 +1,17 @@
+!The energy of the simple harmonic oscillator is:
+!                                                E = p^2/2m + 0.5*k*x^2
+!Here m is the mass, k is the spring force constant, and p = mx˙ is the momentum. 
+!Let us set m = k=1, so the angular frequency, ω, and period, T, are given by ω = sqrt(k/m) = 1, and T = 2*pi/ω = 2*pi Hence, 2E = p^2 + x^2 is a constant, and a plot of p vs x will be a circle of radius √2E.
+!We will solve the Newton’s equation of motion ¨x = −x which will be written as two first order differential equations
+!                                               x˙ = p and p = −x. 
+!(1) Numerically integrate these equations using the Euler and RK4 methods.
+!Use initial conditions, x =1 and p =0. Hence 2E =1. Use a time step h = 0.02T
+!Use 200 time steps in total. Plot 2E vs t/period, x vs p and x vs t/period.
+!In the figure below, results obtained using Euler’s, RK2 and RK4 methods are shown.
+!But you need to show the results only for Euler’s and RK4 methods. You
+!will submit a zip file, q2.zip, containing the code(s), and six output files, 3 for each method.
+
+
 module precision_use
     implicit none 
     INTEGER, PARAMETER:: dp = SELECTED_REAL_KIND(12)
