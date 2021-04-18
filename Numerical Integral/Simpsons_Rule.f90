@@ -1,4 +1,4 @@
-PROGRAM TrapezoidalRuleForIntegration
+PROGRAM SimpsonsRuleForIntegration
     IMPLICIT NONE 
     REAL:: a, b, Area
     INTEGER::  N      ! N is number of segment
@@ -7,32 +7,39 @@ PROGRAM TrapezoidalRuleForIntegration
     WRITE(*, fmt = '(/A)') "Enter the value of a & b"
     READ(*, *) a, b
 
-    CALL TrapezoidalRule(a, b, Area, N)
+    CALL SimpsonsRule(a, b, Area, N)
     WRITE(*, *) "Area under the curve is: ", Area
 
     CONTAINS
-    SUBROUTINE TrapezoidalRule(a, b, Area, N)
+    SUBROUTINE SimpsonsRule(a, b, Area, N)
         IMPLICIT NONE 
-        REAL:: a, b, Area, Xi
+        REAL:: a, b, Area, h
         INTEGER:: N, i
+        REAL, DIMENSION(N-1):: X
         ! N is number of segment
-        IF(N .LT. 1) THEN
+        IF(N .LT. 2) THEN
             Area = 0.0
             RETURN  
         ENDIF
-        Area = (f(a) + f(b)) / 2.0
+        h = (b-a)/N
         DO i = 1, N-1
-            Xi = a + i * (b-a)/N
-            Area = Area + f(Xi)
+            X(i) = a + i * h
         ENDDO
-        Area = ((b-a)/N) * Area
-    END SUBROUTINE TrapezoidalRule
+        Area = f(a) + f(b)
+        DO i = 1, N/2
+            Area = Area + 4 * f(X(2*i-1))
+        ENDDO
+        DO i = 1, (N+1)/2 - 1
+            Area = Area + 2 * f(X(2*i))
+        ENDDO
+        Area = (h/3) * Area
+    END SUBROUTINE SimpsonsRule
 
     REAL FUNCTION f(x)
         IMPLICIT NONE 
         REAL:: x 
-        f = 1.0/x 
+        f = EXP(x)
         return
     END FUNCTION f
 
-END PROGRAM TrapezoidalRuleForIntegration
+END PROGRAM SimpsonsRuleForIntegration

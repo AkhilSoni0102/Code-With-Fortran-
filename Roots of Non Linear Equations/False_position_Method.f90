@@ -1,36 +1,37 @@
-MODULE precision_Use
+MODULE precision
     ! dp = double precision
     INTEGER, PARAMETER:: dp = SELECTED_REAL_KIND(12)
-END MODULE precision_Use
+END MODULE precision
 
-PROGRAM False_Position
-    USE precision_Use
-    IMPLICIT NONE 
+PROGRAM False_Position_Method
+    USE precision
+    IMPLICIT NONE
 
-    REAL(KIND = dp):: x0, x1, x2, f0, f1, f2, a, b, error, root
+    REAL(KIND = dp):: x0, x1, x2, f0, f1, f2, error, root
     WRITE(*, *) "Enter value of interval (a and b)"
-    READ *, a, b
-
-    x1 = a 
-    x2 = b
+    ! For this question enter [120, 130]
+    READ *, x1, x2
+    
+    error = 1e-6
     f1 = Func(x1)
     f2 = Func(x2)
 
-    IF (f1*f2 .GT. 0.0) THEN 
-        WRITE(*, *) "x1 and x2 do not bracket any root"
-        RETURN 
+    IF (f1*f2 .GT. 0.0) THEN
+        WRITE(*, *) "Given interval do not bracket any root"
+        RETURN
     ENDIF
-    error = 1e-6
+
     DO
         x0 = x1 - (x2 - x1)*f1 / (f2 - f1)
         f0 = Func(x0)
+        
         IF (f0 .EQ. 0.0) THEN
             root = x0
             WRITE(*, *) "Root is: ", root
             RETURN
         ENDIF
 
-        IF(f1 * f0 .LT. 0.0_dp) THEN 
+        IF(f1 * f0 .LT. 0.0_dp) THEN
             x2 = x0 
         ELSE 
             x1 = x0 
@@ -39,9 +40,7 @@ PROGRAM False_Position
         IF (abs((x2 - x1)/x2) .LT. error) THEN 
             root = (x1 + x2) / 2.0_dp
             WRITE(*, *) "Root is: ", root
-            RETURN 
-        ELSE 
-            CONTINUE 
+            RETURN
         ENDIF
     ENDDO 
 
@@ -54,4 +53,4 @@ PROGRAM False_Position
         RETURN 
     END FUNCTION Func
 
-END PROGRAM Bisection_Method
+END PROGRAM False_Position_Method
